@@ -30,13 +30,10 @@ public class Person {
     @OneToMany
     private String reimbursements;
 
-    @ManyToOne
-    private String statuses;
-
     public Person() {
     }
 
-    public Person(int id, String firstname, String lastname, Role role, String username, String password, String reimbursements, String statuses) {
+    public Person(int id, String firstname, String lastname, Role role, String username, String password, String reimbursements) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -44,7 +41,6 @@ public class Person {
         this.username = username;
         this.password = password;
         this.reimbursements = reimbursements;
-        this.statuses = statuses;
     }
 
     public int getId() {
@@ -103,14 +99,6 @@ public class Person {
         this.reimbursements = reimbursements;
     }
 
-    public String getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(String statuses) {
-        this.statuses = statuses;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -121,7 +109,6 @@ public class Person {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", reimbursements='" + reimbursements + '\'' +
-                ", statuses='" + statuses + '\'' +
                 '}';
     }
 }

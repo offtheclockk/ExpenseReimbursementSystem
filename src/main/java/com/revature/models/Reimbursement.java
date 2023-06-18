@@ -16,13 +16,17 @@ public class Reimbursement {
 
     private String description;
 
+    @ManyToOne
+    private String statuses;
+
     public Reimbursement() {
     }
 
-    public Reimbursement(int id, int amount, String description) {
+    public Reimbursement(int id, int amount, String description, String statuses) {
         this.id = id;
         this.amount = amount;
         this.description = description;
+        this.statuses = statuses;
     }
 
     public int getId() {
@@ -49,12 +53,21 @@ public class Reimbursement {
         this.description = description;
     }
 
+    public String getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(String statuses) {
+        this.statuses = statuses;
+    }
+
     @Override
     public String toString() {
         return "Reimbursement{" +
                 "id=" + id +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", statuses='" + statuses + '\'' +
                 '}';
     }
 }
