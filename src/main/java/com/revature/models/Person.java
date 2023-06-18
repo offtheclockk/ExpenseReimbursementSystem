@@ -1,8 +1,5 @@
 package com.revature.models;
 
-import org.springframework.context.annotation.Role;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity
@@ -27,20 +24,16 @@ public class Person {
 
     private String password;
 
-    @OneToMany
-    private String reimbursements;
-
     public Person() {
     }
 
-    public Person(int id, String firstname, String lastname, Role role, String username, String password, String reimbursements) {
+    public Person(int id, String firstname, String lastname, Role role, String username, String password) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.role = role;
         this.username = username;
         this.password = password;
-        this.reimbursements = reimbursements;
     }
 
     public int getId() {
@@ -91,14 +84,6 @@ public class Person {
         this.password = password;
     }
 
-    public String getReimbursements() {
-        return reimbursements;
-    }
-
-    public void setReimbursements(String reimbursements) {
-        this.reimbursements = reimbursements;
-    }
-
     @Override
     public String toString() {
         return "Person{" +
@@ -108,7 +93,6 @@ public class Person {
                 ", role=" + role +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", reimbursements='" + reimbursements + '\'' +
                 '}';
     }
 }
