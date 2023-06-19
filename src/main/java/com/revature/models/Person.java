@@ -99,16 +99,4 @@ public class Person {
         this.reimbursements = reimbursements;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", role=" + role +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", reimbursements='" + reimbursements + '\'' +
-                '}';
-    }
 }
