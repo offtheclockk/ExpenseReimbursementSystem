@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -30,6 +31,9 @@ public class Person {
     private String username;
 
     private String password;
+
+    @OneToMany
+    private List<Reimbursement> reimbursements;
 
 
 
