@@ -8,6 +8,7 @@ import com.revature.models.Person;
 import com.revature.models.Reimbursement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class PersonService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
     public PersonService(PersonDAO personDao, ReimbursementDAO reimbursementDAO) {
         this.personDao = personDao;
         this.reimbursementDAO = reimbursementDAO;
