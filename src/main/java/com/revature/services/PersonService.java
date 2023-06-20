@@ -3,6 +3,8 @@ package com.revature.services;
 import com.revature.daos.PersonDAO;
 import com.revature.exceptions.PersonNotFoundException;
 import com.revature.models.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,19 +13,19 @@ import java.util.List;
 public class PersonService {
     private final PersonDAO personDao;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public PersonService(PersonDAO personDao) {
         this.personDao = personDao;
     }
 
     public Person createPerson(Person t){
-        // Now let's call the DAO methods to actually create the teacher
         Person returnedPerson = personDao.save(t);
 
-        // If successful we should have a positive Id
         if (returnedPerson.getId() > 0){
-            // TODO create a log for success
+            logger.info("User created");
         } else{
-            // TODO create a log for failure
+            logger.warn("Failed to create User");
         }
 
         return returnedPerson;
