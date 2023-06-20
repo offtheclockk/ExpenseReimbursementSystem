@@ -18,6 +18,8 @@ public class Reimbursement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String name;
+
     @Column(name = "amount")
     private int amount;
 
