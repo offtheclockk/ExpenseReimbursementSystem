@@ -1,9 +1,16 @@
 package com.revature.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "statuses")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Status {
 
     @Id
@@ -14,35 +21,5 @@ public class Status {
     @Column(name= "status_name")
     private String statusname;
 
-    public Status() {
-    }
 
-    public Status(int id, String statusname) {
-        this.id = id;
-        this.statusname = statusname;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getStatusname() {
-        return statusname;
-    }
-
-    public void setStatusname(String statusname) {
-        this.statusname = statusname;
-    }
-
-    @Override
-    public String toString() {
-        return "Status{" +
-                "id=" + id +
-                ", statusname='" + statusname + '\'' +
-                '}';
-    }
 }
