@@ -44,11 +44,11 @@ public class SecurityConfig {
                 .authorizeRequests() // Underneath here is where we describe the conditions we want to allow
                 .antMatchers("/auth/**").permitAll()
 //                .antMatchers("/courses/**").hasAuthority("Student")
-                .antMatchers(HttpMethod.GET, "/courses/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/courses/**").hasAuthority("Teacher")
-                .antMatchers(HttpMethod.PUT, "/courses/**").hasAuthority("Teacher")
-                .antMatchers(HttpMethod.DELETE, "/courses/**").hasAuthority("Teacher")
-                .antMatchers("/users/courses/**").hasAuthority("Student")
+                .antMatchers(HttpMethod.GET, "/reimbursements/**").hasAuthority("Admin")
+                .antMatchers(HttpMethod.POST, "/reimbursements/**").hasAuthority("Employee")
+                .antMatchers(HttpMethod.PUT, "/reimbursements/**").hasAuthority("Employee")
+                .antMatchers(HttpMethod.DELETE, "/reimbursements/**").hasAuthority("Employee")
+                .antMatchers("/users/reimbursements/**").hasAuthority("Employee")
                 .and()
                 .httpBasic();
 
