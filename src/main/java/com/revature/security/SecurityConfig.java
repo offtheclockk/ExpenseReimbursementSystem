@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/reimbursements/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.POST, "/reimbursements/**").hasAuthority("Employee")
                 .antMatchers(HttpMethod.PUT, "/reimbursements/**").hasAuthority("Employee")
+                .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/reimbursements/**").hasAuthority("Employee")
                 .antMatchers("/users/reimbursements/**").hasAuthority("Employee")
                 .and()
