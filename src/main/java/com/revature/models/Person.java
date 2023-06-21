@@ -32,9 +32,6 @@ public class Person {
 
     private String password;
 
-    @OneToMany
-    private List<Reimbursement> reimbursements;
-
 
 
 }
