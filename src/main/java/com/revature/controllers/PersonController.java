@@ -46,7 +46,7 @@ public class PersonController {
     }
 
     // Update
-    @PutMapping
+    @PutMapping("{id}")
     public Person updatePersonHandler(@RequestBody Person p){
 
         return personService.updatePerson(p);
