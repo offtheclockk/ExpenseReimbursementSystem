@@ -1,6 +1,13 @@
 package com.revature.controllers;
 
+import com.revature.daos.PersonDAO;
+import com.revature.daos.ReimbursementDAO;
+import com.revature.daos.StatusDAO;
+import com.revature.models.Person;
 import com.revature.models.Reimbursement;
+import com.revature.models.Status;
+import com.revature.security.JwtGenerator;
+import com.revature.services.PersonService;
 import com.revature.services.ReimbursementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +18,23 @@ import java.util.List;
 @RequestMapping("reimbursements")
 public class ReimbursementController {
     private final ReimbursementService reimbursementService;
+    private final StatusDAO statusDAO;
+
+    private final ReimbursementDAO reimbursementDAO;
+    private final PersonDAO personDAO;
+    private final PersonService personService;
+    private final JwtGenerator jwtGenerator;
 
     @Autowired
-    public ReimbursementController(ReimbursementService reimbursementService) {
+    public ReimbursementController(ReimbursementService reimbursementService, StatusDAO statusDAO, ReimbursementDAO reimbursementDAO, PersonDAO personDAO, PersonService personService, JwtGenerator jwtGenerator) {
         this.reimbursementService = reimbursementService;
+        this.statusDAO = statusDAO;
+        this.reimbursementDAO = reimbursementDAO;
+        this.personDAO = personDAO;
+        this.personService = personService;
+        this.jwtGenerator = jwtGenerator;
     }
+
 
     @GetMapping
     public List<Reimbursement> getAllReimbursementsHandler(@RequestParam(name = "search", required = false) String searchPattern) {
@@ -32,8 +51,20 @@ public class ReimbursementController {
         return reimbursementService.findReimbursementById(id);
     }
 
+    @GetMapping("/user/{id}")
+    public List<Reimbursement> getReimbursementsByPersonId(@PathVariable("id") int id) {
+        return reimbursementService.getReimbursementsByPerson(id);
+    }
+
     @PostMapping
-    public Reimbursement createReimbursementHandler(@RequestBody Reimbursement r) {
+    public Reimbursement createReimbursementHandler(@RequestBody Reimbursement r, @RequestHeader("Authorization") String bearerToken){
+        Status status = statusDAO.getByName("Pending");
+
+        String username = jwtGenerator.getUsernameFromToken(bearerToken.substring(7));
+        Person p = personService.findPersonByUsername(username);
+
+        r.setStatus(status);
+        r.setPerson(p);
         return reimbursementService.addReimbursement(r);
     }
 
