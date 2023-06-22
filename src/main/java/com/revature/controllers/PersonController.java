@@ -59,25 +59,5 @@ public class PersonController {
         return personService.deletePersonById(id);
     }
 
-    @GetMapping("{id}/reimbursements")
-    public List<Reimbursement> getReimbursementsFromPersonHandler(@PathVariable("id") int id) {
-        return personService.getReimbursementByPersonId(id);
-    }
 
-    @PostMapping("reimbursements/{rid}/register/{pid}")
-    public ResponseEntity<?> createReimbursementHandler(@PathVariable("pid") int pid, @PathVariable("rid") int rid, @RequestHeader("Authorization") String bearerToken) {
-        String username = jwtGenerator.getUsernameFromToken(bearerToken.substring(7));
-        Person p = personService.findPersonByUsername(username);
-
-        if (p.getId() == pid) {
-            return new ResponseEntity<Person>(personService.createReimbursement(pid, rid), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<String>("You cannot access another user's records", HttpStatus.FORBIDDEN);
-        }
-    }
-
-    @DeleteMapping("reimbursements/{rid}/register/{pid}")
-    public Person deleteReimbursementHandler(@PathVariable("pid") int pid, @PathVariable("rid") int rid) {
-        return personService.deleteReimbursement(pid, rid);
-    }
 }
