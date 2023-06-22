@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.daos.ReimbursementDAO;
 import com.revature.exceptions.ReimbursementNotFoundException;
+import com.revature.models.Person;
 import com.revature.models.Reimbursement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,5 +55,9 @@ public class ReimbursementService {
 
     public List<Reimbursement> searchReimbursements(String searchPattern) {
         return reimbursementDAO.findByNameContainingIgnoreCase(searchPattern);
+    }
+
+    public List<Reimbursement> getReimbursementsByPerson(int pid) {
+        return reimbursementDAO.getReimbursementsByPerson(pid);
     }
 }
