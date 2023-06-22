@@ -7,16 +7,20 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
     private final CustomUserDetailService customUserDetailService;
 
@@ -31,9 +35,20 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173")
+                .allowedMethods("GET", "POST") // Add allowed HTTP methods as needed
+                .allowedHeaders("Origin", "Content-Type", "Accept") // Add allowed headers as needed
+                .allowCredentials(true);
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthEntryPoint)
@@ -43,7 +58,6 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests() // Underneath here is where we describe the conditions we want to allow
                 .antMatchers("/auth/**").permitAll()
-//                .antMatchers("/courses/**").hasAuthority("Student")
                 .antMatchers(HttpMethod.GET, "/users/reimbursements/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.POST, "/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/reimbursements/**").permitAll()
