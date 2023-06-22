@@ -19,7 +19,7 @@ public class Status {
     private int id;
 
     @Column(name= "status_name")
-    private String statusname;
+    private String name;
 
 
 }
