@@ -2,10 +2,12 @@ package com.revature.services;
 
 import com.revature.daos.PersonDAO;
 import com.revature.daos.ReimbursementDAO;
+import com.revature.daos.StatusDAO;
 import com.revature.exceptions.PersonNotFoundException;
 import com.revature.exceptions.ReimbursementNotFoundException;
 import com.revature.models.Person;
 import com.revature.models.Reimbursement;
+import com.revature.models.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,15 @@ import java.util.Optional;
 public class PersonService {
     private final PersonDAO personDao;
     private final ReimbursementDAO reimbursementDAO;
+    private final StatusDAO statusDAO;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public PersonService(PersonDAO personDao, ReimbursementDAO reimbursementDAO) {
+    public PersonService(PersonDAO personDao, ReimbursementDAO reimbursementDAO, StatusDAO statusDAO) {
         this.personDao = personDao;
         this.reimbursementDAO = reimbursementDAO;
+        this.statusDAO = statusDAO;
     }
 
     public Person createPerson(Person t){
@@ -70,46 +74,5 @@ public class PersonService {
         }
     }
 
-    public List<Reimbursement> getReimbursementByPersonId(int id) {
-        Optional<Person> returnedPerson = personDao.findById(id);
 
-        if (returnedPerson.isPresent()) {
-            return returnedPerson.get().getReimbursements();
-        } else {
-            throw new PersonNotFoundException("No person with id: " + id);
-        }
-    }
-
-    public Person createReimbursement(int pid, int rid) {
-        Person p = getPersonById(pid);
-        List<Reimbursement> reimbursements = p.getReimbursements();
-        Optional<Reimbursement> returnedReimbursement = reimbursementDAO.findById(rid);
-
-        if (returnedReimbursement.isPresent()) {
-            if (!reimbursements.contains(returnedReimbursement.get())) {
-                reimbursements.add(returnedReimbursement.get());
-                p.setReimbursements(reimbursements);
-                personDao.save(p);
-            } else {
-                throw new ReimbursementNotFoundException("No reimbursement with id: " + rid);
-            }
-        }
-        return p;
-    }
-
-    public Person deleteReimbursement(int pid, int rid) {
-        Person p = getPersonById(pid);
-
-        List<Reimbursement> reimbursements = p.getReimbursements();
-        Optional<Reimbursement> returnedReimbursement = reimbursementDAO.findById(rid);
-
-        if (returnedReimbursement.isPresent() && reimbursements.contains(returnedReimbursement.get())) {
-            reimbursements.remove(returnedReimbursement.get());
-            p.setReimbursements(reimbursements);
-            personDao.save(p);
-        } else {
-            throw new ReimbursementNotFoundException("No reimbursement with id: " + rid);
-        }
-        return p;
-    }
 }
