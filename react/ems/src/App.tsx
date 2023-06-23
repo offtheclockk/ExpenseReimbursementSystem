@@ -18,7 +18,7 @@ const App: React.FC = () => {
       <h1>Expense Reimbursement System</h1>
       {isLoggedIn && <Header />}
       <Switch>
-        <Route exact path="/auth/login">
+        <Route exact path="/">
           <LoginPage onLogin={handleLogin} />
         </Route>
         <Route path="/dashboard" component={Dashboard} />
