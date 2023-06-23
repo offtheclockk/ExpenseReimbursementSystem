@@ -59,26 +59,74 @@ const DenyButton = styled(Button)`
 
 const ReimbursementsComponent = () => {
   const [reimbursements, setReimbursements] = useState<Reimbursement[]>([]);
+  const [choice, setChoice] = useState<Reimbursement[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/reimbursements"
-        );
-        const responseData = response.data;
-        console.log("Response Data:", responseData); // Log the response data for inspection
-        setReimbursements(responseData);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/reimbursements");
+      const responseData = response.data;
+      console.log("Response Data:", responseData); // Log the response data for inspection
+      setChoice(responseData);
+      setReimbursements(responseData);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const filterPending = (e: any) => {
+    e.preventDefault();
+    if (e.target.value) {
+      setChoice(
+        reimbursements.filter(
+          (reimbursement) => reimbursement.status.name === e.target.value
+        )
+      );
+    }
+  };
+
+  const handleApprove = async (reimbursementId: number) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/reimbursements/${reimbursementId}/approve`
+      );
+      console.log("Reimbursement approved:", response.data);
+      setReimbursements(response.data);
+      fetchData();
+      // Perform any additional actions after successful approval
+    } catch (error) {
+      console.error("Error approving reimbursement:", error);
+    }
+  };
+
+  const handleDeny = async (reimbursementId: number) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/reimbursements/${reimbursementId}/deny`
+      );
+      console.log("Reimbursement rejected:", response.data);
+      setReimbursements(response.data);
+      fetchData();
+      // Perform any additional actions after successful approval
+    } catch (error) {
+      console.error("Error rejecting reimbursement:", error);
+    }
+  };
+
   return (
     <div>
+      <Button value="Pending" onClick={filterPending} name="Pending">
+        Pending
+      </Button>
+      <Button value="Approved" onClick={filterPending} name="Approved">
+        Approved
+      </Button>
+      <Button value="Rejected" onClick={filterPending} name="Rejected">
+        Rejected
+      </Button>
       <HeadingTypography variant="h2">Reimbursements</HeadingTypography>
       <TableContainerStyled>
         <Table>
@@ -94,7 +142,7 @@ const ReimbursementsComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {reimbursements.map((reimbursement) => (
+            {choice.map((reimbursement) => (
               <TableRow key={reimbursement.id}>
                 <TableCell>{reimbursement.name}</TableCell>
                 <TableCell>${reimbursement.amount}</TableCell>
@@ -104,12 +152,31 @@ const ReimbursementsComponent = () => {
                   {reimbursement.person.lastName}
                 </TableCell>
                 <TableCell>{reimbursement.status.name}</TableCell>
-                <TableCell>
-                  <ApproveButton variant="contained">Approve</ApproveButton>
-                </TableCell>
-                <TableCell>
-                  <DenyButton variant="contained">Deny</DenyButton>
-                </TableCell>
+                {reimbursement.status.name === "Pending" ? (
+                  <>
+                    <TableCell>
+                      <ApproveButton
+                        variant="contained"
+                        onClick={() => handleApprove(reimbursement.id)}
+                      >
+                        Approve
+                      </ApproveButton>
+                    </TableCell>
+                    <TableCell>
+                      <DenyButton
+                        variant="contained"
+                        onClick={() => handleDeny(reimbursement.id)}
+                      >
+                        Deny
+                      </DenyButton>
+                    </TableCell>
+                  </>
+                ) : (
+                  <>
+                    <TableCell />
+                    <TableCell />
+                  </>
+                )}
               </TableRow>
             ))}
           </TableBody>
