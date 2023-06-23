@@ -46,6 +46,11 @@ public class ReimbursementController {
         return reimbursementService.getAllReimbursements();
     }
 
+    @GetMapping("/pending")
+    public List<Reimbursement> getAllPendingReimbursementsHandler() {
+        return reimbursementService.getAllPendingReimbursements();
+    }
+
     @GetMapping("{id}")
     public Reimbursement findReimbursementByIdHandler(@PathVariable("id") int id) {
         return reimbursementService.findReimbursementById(id);
@@ -71,6 +76,16 @@ public class ReimbursementController {
     @PutMapping
     public Reimbursement updateReimbursementHandler(@RequestBody Reimbursement r) {
         return reimbursementService.updateReimbursement(r);
+    }
+
+    @PutMapping("{id}/approve")
+    public boolean approveReimbursementHandler(@PathVariable("id") int id) {
+        return reimbursementService.approveReimbursement(id);
+    }
+
+    @PutMapping("{id}/deny")
+    public boolean denyReimbursementHandler(@PathVariable("id") int id) {
+        return reimbursementService.denyReimbursement(id);
     }
 
     @DeleteMapping("{id}")
