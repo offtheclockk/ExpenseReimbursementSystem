@@ -4,13 +4,16 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Button,
-  Typography,
 } from "@mui/material";
-import { styled } from "@mui/system";
+import {
+  TableContainerStyled,
+  HeadingTypography,
+  ApproveButton,
+  DenyButton,
+} from "./ReimbursementsStyles";
 
 interface Reimbursement {
   id: number;
@@ -31,31 +34,6 @@ interface Status {
   id: number;
   name: string;
 }
-
-const TableContainerStyled = styled(TableContainer)`
-  margin-top: 16px;
-`;
-
-const HeadingTypography = styled(Typography)`
-  font-size: 24px;
-  margin-bottom: 16px;
-`;
-
-const ApproveButton = styled(Button)`
-  background-color: #4caf50;
-  color: white;
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const DenyButton = styled(Button)`
-  background-color: #f44336;
-  color: white;
-  &:hover {
-    opacity: 0.8;
-  }
-`;
 
 const ReimbursementsComponent = () => {
   const [reimbursements, setReimbursements] = useState<Reimbursement[]>([]);
