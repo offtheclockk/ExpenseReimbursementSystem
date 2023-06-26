@@ -13,6 +13,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister }) => {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -36,14 +37,19 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister }) => {
       setLastName("");
       setUsername("");
       setPassword("");
+      setUsernameError("");
 
       // Call the onRegister prop
       onRegister();
 
       // Redirect to login page
       history.push("/");
-    } catch (error) {
-      console.error("Registration failed:", error);
+    } catch (error: any) {
+      if (error.response && error.response.status === 400) {
+        setUsernameError("Username is already taken");
+      } else {
+        console.error("Registration failed:", error);
+      }
     }
   };
 
@@ -83,6 +89,7 @@ const RegisterPage: React.FC<RegisterPageProps> = ({ onRegister }) => {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          {usernameError && <p className="text-danger">{usernameError}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password:</label>
