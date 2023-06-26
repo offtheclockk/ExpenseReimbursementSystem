@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.*;
+import java.util.List;
+
 @RestController
 @RequestMapping("auth")
 public class AuthController {
@@ -74,6 +77,12 @@ public class AuthController {
 
         String token = jwtGenerator.generateToken(authentication);
 
-        return new ResponseEntity<AuthResponseDTO>(new AuthResponseDTO(token), HttpStatus.OK);
+        AuthResponseDTO response = new AuthResponseDTO(token);
+
+        Person p = personDao.findByUsername(loginDTO.getUsername()).get();
+
+        response.setUserId(p.getId());
+
+        return new ResponseEntity<AuthResponseDTO>(response, HttpStatus.OK);
     }
 }

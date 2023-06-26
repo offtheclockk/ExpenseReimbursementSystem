@@ -40,7 +40,7 @@ public class SecurityConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Add allowed HTTP methods as needed
-                .allowedHeaders("Origin", "Content-Type", "Accept") // Add allowed headers as needed
+                .allowedHeaders("Authorization", "Origin", "Content-Type", "Accept") // Add allowed headers as needed
                 .allowCredentials(true);
     }
 
@@ -61,6 +61,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .antMatchers(HttpMethod.GET, "/users/reimbursements/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.POST, "/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/reimbursements/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/reimbursements/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/reimbursements/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/**").permitAll()

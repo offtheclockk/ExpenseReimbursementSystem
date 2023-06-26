@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface LoginResponse {
-  token: string;
+  accessToken: string;
+  userId: number;
 }
 
 interface LoginPageProps {
-  onLogin: () => void;
+  onLogin: (userId: number, token: string) => void;
 }
 
 const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
@@ -33,42 +35,51 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
           password,
         }
       );
-      const { token } = response.data;
+      console.log(response.data);
+      const token = response.data.accessToken;
+      localStorage.setItem("token", token);
       // Store the token in localStorage or session storage
       // Redirect the user to another page
       history.push("/dashboard");
-      onLogin(); // Call the onLogin prop
+      onLogin(response.data.userId, token); // Call the onLogin prop
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Login Page</h1>
       <form onSubmit={handleLogin}>
-        <div>
+        <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
             type="text"
             id="username"
+            className="form-control"
             value={username}
             onChange={handleUsernameChange}
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"
+            className="form-control"
             value={password}
             onChange={handlePasswordChange}
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="btn btn-primary">
+          Login
+        </button>
       </form>
+      <p>
+        Don't have an account? <Link to="/register">Register Here</Link>
+      </p>
     </div>
   );
 };
