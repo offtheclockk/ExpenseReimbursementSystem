@@ -1,10 +1,13 @@
 import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Dashboard: React.FC = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Welcome to the dashboard!</p>
+    <div className="container">
+      <div className="jumbotron mt-4">
+        <h1 className="display-4">Dashboard</h1>
+        <p className="lead">Welcome to the dashboard!</p>
+      </div>
     </div>
   );
 };
