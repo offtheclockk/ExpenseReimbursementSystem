@@ -1,10 +1,19 @@
 package com.revature.dtos;
 
 public class LoginDTO {
+    private int userId;
     private String username;
     private String password;
 
     public LoginDTO() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public LoginDTO(String username, String password) {
@@ -31,7 +40,8 @@ public class LoginDTO {
     @Override
     public String toString() {
         return "LoginDTO{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
