@@ -33,7 +33,12 @@ const ReimbursementsComponent = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/reimbursements");
+      const response = await axios.get("http://localhost:8080/reimbursements", {
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+          "Content-Type": "application/json",
+        },
+      });
       const responseData = response.data;
       console.log("Response Data:", responseData);
       setChoice(responseData);
@@ -78,6 +83,16 @@ const ReimbursementsComponent = () => {
     } catch (error) {
       console.error("Error rejecting reimbursement:", error);
     }
+  };
+
+  const getCookie = (name: string) => {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
+    if (cookie) {
+      console.log(cookie.split("=")[1]);
+      return cookie.split("=")[1];
+    }
+    return null;
   };
 
   return (
@@ -151,7 +166,7 @@ const ReimbursementsComponent = () => {
                 <>
                   <td>
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-success"
                       onClick={() => handleApprove(reimbursement.id)}
                     >
                       Approve
@@ -159,7 +174,7 @@ const ReimbursementsComponent = () => {
                   </td>
                   <td>
                     <button
-                      className="btn btn-primary"
+                      className="btn btn-danger"
                       onClick={() => handleDeny(reimbursement.id)}
                     >
                       Deny
