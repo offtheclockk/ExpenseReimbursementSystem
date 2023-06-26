@@ -1,39 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
-import { styled } from "@mui/system";
-
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  role: Role;
-}
-
-interface Role {
-  id: number;
-  name: string;
-}
-
-const TableContainerStyled = styled(TableContainer)`
-  margin-top: 16px;
-`;
-
-const HeadingTypography = styled(Typography)`
-  font-size: 24px;
-  margin-bottom: 16px;
-`;
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const UsersComponent = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,29 +22,27 @@ const UsersComponent = () => {
 
   return (
     <div>
-      <HeadingTypography variant="h2">Users</HeadingTypography>
-      <TableContainerStyled>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>First Name</TableCell>
-              <TableCell>Last Name</TableCell>
-              <TableCell>Position</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.role.name}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainerStyled>
+      <h2 className="mt-4 mb-4">Users</h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user: any) => (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.firstName}</td>
+              <td>{user.lastName}</td>
+              <td>{user.role.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
