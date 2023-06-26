@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Reimbursement {
   id: number;
@@ -34,29 +35,41 @@ const MyReimbursements: React.FC<MyReimbursementsProps> = ({ userId }) => {
         const response = await axios.get(
           `http://localhost:8080/reimbursements/user/${userId}`
         );
-        console.log(response.data);
         setReimbursements(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching reimbursements:", error);
       }
     };
 
-    fetchReimbursements(userId);
+    fetchReimbursements(Number(userId));
   }, [userId]);
 
   return (
-    <div>
-      <h2>My Reimbursements</h2>
-      <ul>
-        {reimbursements.map((reimbursement) => (
-          <li key={reimbursement.id}>
-            {/* Display relevant reimbursement data */}
-            <p>Amount: {reimbursement.amount}</p>
-            <p>Description: {reimbursement.description}</p>
-            {/* Add additional fields as needed */}
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <h2 className="mt-4">My Reimbursements</h2>
+      <table className="table table-striped table-bordered mt-4">
+        <thead>
+          <tr>
+            <th>Reimbursement Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reimbursements.map((reimbursement) => (
+            <tr key={reimbursement.id}>
+              <td>
+                <h4>{reimbursement.name}</h4>
+              </td>
+              <td>{reimbursement.amount}</td>
+              <td>{reimbursement.description}</td>
+              <td>{reimbursement.status.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
