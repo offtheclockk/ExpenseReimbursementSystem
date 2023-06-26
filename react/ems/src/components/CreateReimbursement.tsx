@@ -9,9 +9,15 @@ const CreateReimbursement = () => {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState<number>(0);
   const [description, setDescription] = useState("");
+  const [amountError, setAmountError] = useState("");
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+
+    if (amount <= 0) {
+      setAmountError("Amount must be greater than 0");
+      return;
+    }
 
     try {
       const newReimbursement = {
@@ -60,9 +66,13 @@ const CreateReimbursement = () => {
             id="amount"
             className="form-control"
             value={amount}
-            onChange={(e) => setAmount(parseFloat(e.target.value))}
+            onChange={(e) => {
+              setAmount(parseFloat(e.target.value));
+              setAmountError("");
+            }}
             required
           />
+          {amountError && <p className="text-danger">{amountError}</p>}
         </div>
         <div className="form-group">
           <label htmlFor="description">Description:</label>
