@@ -8,7 +8,12 @@ const UsersComponent = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/users");
+        const response = await axios.get("http://localhost:8080/users", {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+            "Content-Type": "application/json",
+          },
+        });
         const responseData = response.data;
         console.log("Response Data:", responseData); // Log the response data for inspection
         setUsers(responseData);
@@ -19,6 +24,16 @@ const UsersComponent = () => {
 
     fetchData();
   }, []);
+
+  const getCookie = (name: string) => {
+    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
+    if (cookie) {
+      console.log(cookie.split("=")[1]);
+      return cookie.split("=")[1];
+    }
+    return null;
+  };
 
   return (
     <div>
