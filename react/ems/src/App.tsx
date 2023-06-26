@@ -16,12 +16,11 @@ const App = () => {
   useEffect(() => {
     // Check the cookie on application load
     const token = getCookie("token");
+    const id = Number(getCookie("userId"));
     if (token) {
-      // Verify the token and set the login status
       setIsLoggedIn(true);
-      // Fetch the user ID associated with the token
-      const userId = getUserIdFromToken(token);
-      // setUserId(userId);
+      setUserId(id);
+      console.log(id);
     }
   }, []);
 
@@ -32,6 +31,7 @@ const App = () => {
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 7); // Set the expiration date to 7 days from now
     document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/`;
+    document.cookie = `userId=${userId}`;
   };
 
   const handleLogout = () => {
@@ -50,17 +50,10 @@ const App = () => {
     const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
     const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
     if (cookie) {
+      console.log(cookie.split("=")[1]);
       return cookie.split("=")[1];
     }
     return null;
-  };
-
-  // Helper function to extract the user ID from the token (implementation depends on your token structure)
-  const getUserIdFromToken = (token: string) => {
-    // Extract the user ID from the token
-    // Implement the necessary logic to parse and validate the token structure
-    // Return the user ID
-    // Example: return tokenPayload.userId;
   };
 
   return (
