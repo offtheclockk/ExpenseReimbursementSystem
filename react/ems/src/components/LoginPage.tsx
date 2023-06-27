@@ -73,7 +73,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-primary mt-2">
           Login
         </button>
       </form>
