@@ -71,7 +71,7 @@ const MyReimbursements: React.FC<MyReimbursementsProps> = ({ userId }) => {
               <td>
                 <h4>{reimbursement.name}</h4>
               </td>
-              <td>{reimbursement.amount}</td>
+              <td>${reimbursement.amount}</td>
               <td>{reimbursement.description}</td>
               <td>{reimbursement.status.name}</td>
             </tr>
