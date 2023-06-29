@@ -37,8 +37,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       );
       console.log(response.data);
       const token = response.data.accessToken;
-      localStorage.setItem("token", token);
-      // Store the token in localStorage or session storage
       // Redirect the user to another page
       history.push("/dashboard");
       onLogin(response.data.userId, token); // Call the onLogin prop

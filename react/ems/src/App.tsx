@@ -1,28 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import LoginPage from "./components/LoginPage";
-import Dashboard from "./components/Dashboard";
-import Header from "./components/Header";
-import UsersComponent from "./components/UsersComponent";
-import ReimbursementsComponent from "./components/ReimbursementsComponent";
-import RegisterPage from "./components/RegisterPage";
-import CreateReimbursement from "./components/CreateReimbursement";
-import MyReimbursements from "./components/MyReimbursements";
+import LoginPage from "./components/Users/LoginPage";
+import Dashboard from "./components/Dashboards/Dashboard";
+import Header from "./components/Headers/Header";
+import UsersComponent from "./components/Users/UsersComponent";
+import ReimbursementsComponent from "./components/Reimbursements/ReimbursementsComponent";
+import RegisterPage from "./components/Users/RegisterPage";
+import CreateReimbursement from "./components/Reimbursements/CreateReimbursement";
+import MyReimbursements from "./components/Reimbursements/MyReimbursements";
+import EmployeeHeader from "./components/Headers/EmployeeHeader";
+import EmployeeDashboard from "./components/Dashboards/EmployeeDashboard";
+import { getCookie, parseJwt } from "./helpers";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState<number>(0);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => {
-    // Check the cookie on application load
-    const token = getCookie("token");
-    const id = Number(getCookie("userId"));
-    if (token) {
-      setIsLoggedIn(true);
-      setUserId(id);
-      console.log(id);
+const checkTokenAndSetLoginState = () => {
+  const token = getCookie("token");
+  const id = Number(getCookie("userId"));
+  const admin = Boolean(getCookie("admin"));
+  if (token) {
+    setIsLoggedIn(true);
+    setUserId(id);
+    if (parseJwt(token).Role === "Admin") {
+      setIsAdmin(true);
     }
-  }, []);
+  }
+};
+
+useEffect(() => {
+  checkTokenAndSetLoginState();
+}, []);
 
   const handleLogin = (userId: number, token: string) => {
     setIsLoggedIn(true);
@@ -32,6 +42,9 @@ const App = () => {
     expirationDate.setDate(expirationDate.getDate() + 7); // Set the expiration date to 7 days from now
     document.cookie = `token=${token}; expires=${expirationDate.toUTCString()}; path=/`;
     document.cookie = `userId=${userId}`;
+    if (parseJwt(token).Role === "Admin") {
+      setIsAdmin(true);
+    }
   };
 
   const handleLogout = () => {
@@ -45,20 +58,13 @@ const App = () => {
     console.log("User successfully registered");
   };
 
-  // Helper function to retrieve a cookie value by name
-  const getCookie = (name: string) => {
-    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
-    if (cookie) {
-      console.log(cookie.split("=")[1]);
-      return cookie.split("=")[1];
-    }
-    return null;
-  };
-
   return (
     <div>
-      {isLoggedIn && <Header onLogout={handleLogout} />}
+      {isLoggedIn && isAdmin ? (
+        <Header onLogout={handleLogout} />
+      ) : (
+        <EmployeeHeader onLogout={handleLogout} />
+      )}
       <Switch>
         <Route exact path="/">
           {isLoggedIn ? (
@@ -70,7 +76,10 @@ const App = () => {
         <Route path="/register">
           <RegisterPage onRegister={handleRegister} />
         </Route>
-        <Route path="/dashboard" component={Dashboard} />
+        <Route
+          path="/dashboard"
+          component={isAdmin ? Dashboard : EmployeeDashboard}
+        />
         <Route path="/users" component={UsersComponent} />
         <Route path="/reimbursements" component={ReimbursementsComponent} />
         <Route path="/create/reimbursement" component={CreateReimbursement} />

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import api from "../api";
+import { getCookie } from "../../helpers";
 
 const CreateReimbursement = () => {
   const history = useHistory();
@@ -26,10 +26,15 @@ const CreateReimbursement = () => {
         description,
       };
 
-      const response = await api.post(
+      const response = await axios.post(
         "http://localhost:8080/reimbursements",
-        newReimbursement
-      );
+        newReimbursement,
+        {
+          headers: {
+            Authorization: `Bearer ${getCookie("token")}`,
+            "Content-Type": "application/json",
+          }
+        });
       console.log("Reimbursement created:", response.data);
 
       // Reset the form
@@ -38,7 +43,7 @@ const CreateReimbursement = () => {
       setDescription("");
 
       // Redirect to reimbursements page
-      history.push("/reimbursements");
+      history.push("/my/reimbursements");
     } catch (error) {
       console.error("Error creating reimbursement:", error);
     }

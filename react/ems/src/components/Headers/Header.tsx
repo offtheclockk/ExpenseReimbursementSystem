@@ -37,6 +37,7 @@ const Header = ({ onLogout }: any) => {
         console.error(error);
       });
   };
+	
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -57,7 +58,16 @@ const Header = ({ onLogout }: any) => {
                 href="/reimbursements"
                 onClick={getReimbursements}
               >
-                Reimbursements
+                All Reimbursements
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/my/reimbursements"
+                onClick={getReimbursements}
+              >
+                My Reimbursements
               </a>
             </li>
             <li className="nav-item">

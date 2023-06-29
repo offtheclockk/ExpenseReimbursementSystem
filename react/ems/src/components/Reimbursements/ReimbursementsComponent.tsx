@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { getCookie } from "../../helpers";
 
 interface Reimbursement {
   id: number;
@@ -83,16 +84,6 @@ const ReimbursementsComponent = () => {
     } catch (error) {
       console.error("Error rejecting reimbursement:", error);
     }
-  };
-
-  const getCookie = (name: string) => {
-    const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
-    const cookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
-    if (cookie) {
-      console.log(cookie.split("=")[1]);
-      return cookie.split("=")[1];
-    }
-    return null;
   };
 
   return (

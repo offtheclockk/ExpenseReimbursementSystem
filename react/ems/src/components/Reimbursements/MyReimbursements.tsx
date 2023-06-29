@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 interface Reimbursement {
   id: number;
@@ -48,6 +49,13 @@ const MyReimbursements: React.FC<MyReimbursementsProps> = ({ userId }) => {
   return (
     <div className="container">
       <h2 className="mt-4">My Reimbursements</h2>
+      <div className="d-flex justify-content-center">
+        <Link to="/create/reimbursement">
+          <button className="btn btn-primary me-2">
+            Create A New Reimbursement
+          </button>
+        </Link>
+      </div>
       <table className="table table-striped table-bordered mt-4">
         <thead>
           <tr>
