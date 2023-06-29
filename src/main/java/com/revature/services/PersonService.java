@@ -2,12 +2,12 @@ package com.revature.services;
 
 import com.revature.daos.PersonDAO;
 import com.revature.daos.ReimbursementDAO;
+import com.revature.daos.RoleDAO;
 import com.revature.daos.StatusDAO;
 import com.revature.exceptions.PersonNotFoundException;
-import com.revature.exceptions.ReimbursementNotFoundException;
 import com.revature.models.Person;
 import com.revature.models.Reimbursement;
-import com.revature.models.Status;
+import com.revature.models.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,16 @@ public class PersonService {
     private final ReimbursementDAO reimbursementDAO;
     private final StatusDAO statusDAO;
 
+    private final RoleDAO roleDAO;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public PersonService(PersonDAO personDao, ReimbursementDAO reimbursementDAO, StatusDAO statusDAO) {
+    public PersonService(PersonDAO personDao, ReimbursementDAO reimbursementDAO, StatusDAO statusDAO, RoleDAO roleDAO) {
         this.personDao = personDao;
         this.reimbursementDAO = reimbursementDAO;
         this.statusDAO = statusDAO;
+        this.roleDAO = roleDAO;
     }
 
     public Person createPerson(Person t){
@@ -72,6 +75,32 @@ public class PersonService {
         } else{
             return false;
         }
+    }
+
+    public boolean promotePerson(int id) {
+        Optional<Person> optionalPerson = personDao.findById(id);
+        Role role = roleDAO.getReferenceById(1);
+        if (optionalPerson.isPresent()) {
+            Person person = optionalPerson.get();
+            System.out.println(person);
+            person.setRole(role);
+
+            personDao.save(person);
+        }
+        return true;
+    }
+
+    public boolean demotePerson(int id) {
+        Optional<Person> optionalPerson = personDao.findById(id);
+        Role role = roleDAO.getReferenceById(2);
+        if (optionalPerson.isPresent()) {
+            Person person = optionalPerson.get();
+            System.out.println(person);
+            person.setRole(role);
+
+            personDao.save(person);
+        }
+        return true;
     }
 
 
