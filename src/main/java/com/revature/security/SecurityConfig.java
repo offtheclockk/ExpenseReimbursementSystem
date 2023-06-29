@@ -66,6 +66,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .antMatchers(HttpMethod.POST, "/users/reimbursements/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/reimbursements/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/users/promote/**").hasAuthority("Admin")
+                .antMatchers(HttpMethod.PUT, "/users/demote/**").hasAuthority("Admin")
                 .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/reimbursements/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/reimbursements/**").permitAll()
