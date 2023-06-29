@@ -52,6 +52,18 @@ public class PersonController {
         return personService.updatePerson(p);
     }
 
+    @PutMapping("/promote/{id}")
+    public boolean approvePersonHandler(@PathVariable("id") int id){
+
+        return personService.promotePerson(id);
+    }
+
+    @PutMapping("/demote/{id}")
+    public boolean demotePersonHandler(@PathVariable("id") int id){
+
+        return personService.demotePerson(id);
+    }
+
     // Delete
     @DeleteMapping("{id}")
     public boolean deletePersonHandler(@PathVariable("id") int id){
