@@ -6,6 +6,8 @@ import { getCookie } from "../../helpers";
 const UsersComponent = () => {
   const [users, setUsers] = useState([]);
 
+  const userId = getCookie("userId");
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -76,15 +78,24 @@ const UsersComponent = () => {
                 <td>{user.role.name}</td>
                 {user.role.name === "Admin" ? (
                   <>
-                    <td></td>
-                    <td>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleDemote(user.id)}
-                      >
-                        Demote
-                      </button>
-                    </td>
+                    {user.id != userId ? (
+                      <>
+                        <td></td>
+                        <td>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => handleDemote(user.id)}
+                          >
+                            Demote
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td></td>
+                        <td></td>
+                      </>
+                    )}
                   </>
                 ) : (
                   <>
