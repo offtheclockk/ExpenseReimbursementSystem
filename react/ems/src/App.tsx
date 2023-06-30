@@ -9,30 +9,30 @@ import RegisterPage from "./components/Users/RegisterPage";
 import CreateReimbursement from "./components/Reimbursements/CreateReimbursement";
 import MyReimbursements from "./components/Reimbursements/MyReimbursements";
 import EmployeeHeader from "./components/Headers/EmployeeHeader";
-import EmployeeDashboard from "./components/Dashboards/EmployeeDashboard";
 import { getCookie, parseJwt } from "./helpers";
+import EmployeeDashboard from "./components/Dashboards/EmployeeDashboard";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState<number>(0);
   const [isAdmin, setIsAdmin] = useState(false);
 
-const checkTokenAndSetLoginState = () => {
-  const token = getCookie("token");
-  const id = Number(getCookie("userId"));
-  const admin = Boolean(getCookie("admin"));
-  if (token) {
-    setIsLoggedIn(true);
-    setUserId(id);
-    if (parseJwt(token).Role === "Admin") {
-      setIsAdmin(true);
+  const checkTokenAndSetLoginState = () => {
+    const token = getCookie("token");
+    const id = Number(getCookie("userId"));
+    const admin = Boolean(getCookie("admin"));
+    if (token) {
+      setIsLoggedIn(true);
+      setUserId(id);
+      if (parseJwt(token).Role === "Admin") {
+        setIsAdmin(true);
+      }
     }
-  }
-};
+  };
 
-useEffect(() => {
-  checkTokenAndSetLoginState();
-}, []);
+  useEffect(() => {
+    checkTokenAndSetLoginState();
+  }, []);
 
   const handleLogin = (userId: number, token: string) => {
     setIsLoggedIn(true);
@@ -62,9 +62,9 @@ useEffect(() => {
     <div>
       {isLoggedIn && isAdmin ? (
         <Header onLogout={handleLogout} />
-      ) : (
+      ) : isLoggedIn ? (
         <EmployeeHeader onLogout={handleLogout} />
-      )}
+      ) : null}
       <Switch>
         <Route exact path="/">
           {isLoggedIn ? (
